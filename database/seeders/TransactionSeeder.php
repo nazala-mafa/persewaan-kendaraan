@@ -20,22 +20,22 @@ class TransactionSeeder extends Seeder
             ['name' => 'expense']
         ]);
 
-        for ($i=0; $i < 10; $i++) { 
+        for ($i = 0; $i < 40; $i++) {
             $transaction = TransactionHeader::create([
                 'description' => fake()->sentence(),
                 'code' => fake()->numerify("20230909######"),
-                'rate_euro' => (double)fake()->numerify("1#000"),
+                'rate_euro' => (double) fake()->numerify("1#000"),
                 'date_paid' => now()
             ]);
-            for ($j=0; $j < 4; $j++) { 
+            for ($j = 0; $j < 4; $j++) {
                 TransactionDetail::insert([
                     'transaction_id' => $transaction->id,
                     'transaction_category_id' => fake()->numberBetween(1, 2),
                     'name' => fake()->sentence(),
-                    'value_idr' => (double)fake()->numerify("###00")
+                    'value_idr' => (double) fake()->numerify("###00")
                 ]);
             }
         }
-                
+
     }
 }
