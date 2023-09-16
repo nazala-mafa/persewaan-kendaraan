@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\TransactionDataTable;
 use App\Models\TransactionCategory;
 use App\Models\TransactionDetail;
 use App\Models\TransactionHeader;
@@ -9,19 +10,14 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    function datatable(TransactionDataTable $transactionDataTable)
     {
+        return $transactionDataTable->ajax();
+
         $transactionModel = new TransactionDetail();
         $transactionModel = $transactionModel
             ->join('transaction_header', 'transaction_header.id', '=', 'transaction_detail.transaction_id')
             ->join('ms_category', 'ms_category.id', '=', 'transaction_detail.transaction_category_id');
-
-        $page = request()->page ?? 1;
-        $take = request()->take ?? 10;
-        $transactionModel = $transactionModel->skip(($page - 1) * $take)->take($take);
 
         $category_id = request()?->category_id;
         if ($category_id) {
@@ -45,11 +41,17 @@ class TransactionController extends Controller
             $transactionModel = $transactionModel->where('transaction_header.date_paid', '<=', $date_to);
         }
 
-        $categories = TransactionCategory::all();
         $transactions = $transactionModel->orderBy('transaction_header.id')
             ->get(['transaction_detail.*', 'transaction_header.*', 'transaction_detail.id as td_id', 'ms_category.name as category_name']);
-        $transactionCount = TransactionDetail::count();
-        return inertia('Transaction/Index', compact('transactions', 'transactionCount', 'categories'));
+        return response()->json(compact('transactions'));
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $categories = TransactionCategory::all();
+        return inertia('Transaction/NewIndex', compact('categories'));
     }
 
     /**

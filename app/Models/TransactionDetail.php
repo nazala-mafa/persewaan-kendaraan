@@ -17,10 +17,16 @@ class TransactionDetail extends Model
         'name',
         'value_idr'
     ];
-    
+
     public $timestamps = false;
 
-    function header() {
+    function header()
+    {
         return $this->belongsTo(TransactionHeader::class, 'transaction_id', 'id');
+    }
+
+    function category()
+    {
+        return $this->belongsTo(TransactionCategory::class, 'transaction_category_id', 'id');
     }
 }

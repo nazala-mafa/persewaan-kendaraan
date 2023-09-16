@@ -20,6 +20,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "antd": "^5.9.0",
+        "qs": "^6.11.2",
         "react-icons": "^4.11.0"
     }
 }
