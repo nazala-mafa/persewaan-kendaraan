@@ -83,111 +83,109 @@ export default function TransactionDetail({
                             }))}
                         />
                     </div>
-                    <Table
-                        className="mt-2"
-                        bordered={true}
-                        rowKey={(r) => r.id}
-                        dataSource={transactions}
-                        pagination={false}
-                    >
-                        <Table.Column
-                            title="Transaction Name"
-                            render={(item, _, idx) => (
-                                <>
-                                    <Input
-                                        value={item.name}
-                                        onChange={(e) =>
-                                            transactionChangeHandler(
-                                                idx,
-                                                "name",
-                                                e.target.value
-                                            )
-                                        }
-                                        bordered={!item.name}
-                                    />
-                                    {errors?.[
-                                        `transaction_details.${parentIdx}.details.${idx}.name`
-                                    ] && (
-                                        <p className="text-red-600">
-                                            {
-                                                errors?.[
-                                                    `transaction_details.${parentIdx}.details.${idx}.name`
-                                                ]
-                                            }
-                                        </p>
-                                    )}
-                                </>
-                            )}
-                        />
-                        <Table.Column
-                            title="Value (IDR)"
-                            render={(item, _, idx) => (
-                                <>
-                                    <InputNumber
-                                        className="w-full"
-                                        value={item.value_idr}
-                                        formatter={(value) =>
-                                            `${value}`.replace(
-                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                ","
-                                            )
-                                        }
-                                        parser={(value) =>
-                                            value?.replace(/\$\s?|(,*)/g, "")
-                                        }
-                                        onChange={(e) =>
-                                            transactionChangeHandler(
-                                                idx,
-                                                "value_idr",
-                                                e
-                                            )
-                                        }
-                                        bordered={!item.value_idr}
-                                    />
-                                    {errors?.[
-                                        `transaction_details.${parentIdx}.details.${idx}.value_idr`
-                                    ] && (
-                                        <p className="text-red-600">
-                                            {
-                                                errors?.[
-                                                    `transaction_details.${parentIdx}.details.${idx}.value_idr`
-                                                ]
-                                            }
-                                        </p>
-                                    )}
-                                </>
-                            )}
-                        />
-                        <Table.Column
-                            title="Action"
-                            render={(_, __, idx) => (
-                                <div className="flex gap-1 justify-center">
-                                    {idx === transactions.length - 1 && (
-                                        <Button
-                                            shape="circle"
-                                            className="flex justify-center items-center"
-                                            onClick={addRowHandler}
-                                        >
-                                            <FaPlus />
-                                        </Button>
-                                    )}
-                                    {transactions.length !== 1 && (
-                                        <Button
-                                            shape="circle"
-                                            className="flex justify-center items-center"
-                                            onClick={() =>
-                                                removeRowHandler(idx)
-                                            }
-                                        >
-                                            <FaMinus />
-                                        </Button>
-                                    )}
-                                </div>
-                            )}
-                        />
-                    </Table>
                 </div>
             </div>
+            <Table
+                className="mt-2"
+                bordered={true}
+                rowKey={(r) => r.id}
+                dataSource={transactions}
+                pagination={false}
+            >
+                <Table.Column
+                    title="Transaction Name"
+                    render={(item, _, idx) => (
+                        <>
+                            <Input
+                                value={item.name}
+                                onChange={(e) =>
+                                    transactionChangeHandler(
+                                        idx,
+                                        "name",
+                                        e.target.value
+                                    )
+                                }
+                                bordered={!item.name}
+                            />
+                            {errors?.[
+                                `transaction_details.${parentIdx}.details.${idx}.name`
+                            ] && (
+                                <p className="text-red-600">
+                                    {
+                                        errors?.[
+                                            `transaction_details.${parentIdx}.details.${idx}.name`
+                                        ]
+                                    }
+                                </p>
+                            )}
+                        </>
+                    )}
+                />
+                <Table.Column
+                    title="Value (IDR)"
+                    render={(item, _, idx) => (
+                        <>
+                            <InputNumber
+                                className="w-full"
+                                value={item.value_idr}
+                                formatter={(value) =>
+                                    `${value}`.replace(
+                                        /\B(?=(\d{3})+(?!\d))/g,
+                                        ","
+                                    )
+                                }
+                                parser={(value) =>
+                                    value?.replace(/\$\s?|(,*)/g, "")
+                                }
+                                onChange={(e) =>
+                                    transactionChangeHandler(
+                                        idx,
+                                        "value_idr",
+                                        e
+                                    )
+                                }
+                                bordered={!item.value_idr}
+                            />
+                            {errors?.[
+                                `transaction_details.${parentIdx}.details.${idx}.value_idr`
+                            ] && (
+                                <p className="text-red-600">
+                                    {
+                                        errors?.[
+                                            `transaction_details.${parentIdx}.details.${idx}.value_idr`
+                                        ]
+                                    }
+                                </p>
+                            )}
+                        </>
+                    )}
+                />
+                <Table.Column
+                    title="Action"
+                    render={(_, __, idx) => (
+                        <div className="flex gap-1 justify-center">
+                            {idx === transactions.length - 1 && (
+                                <Button
+                                    shape="circle"
+                                    className="flex justify-center items-center"
+                                    onClick={addRowHandler}
+                                >
+                                    <FaPlus />
+                                </Button>
+                            )}
+                            {transactions.length !== 1 && (
+                                <Button
+                                    shape="circle"
+                                    className="flex justify-center items-center"
+                                    onClick={() => removeRowHandler(idx)}
+                                >
+                                    <FaMinus />
+                                </Button>
+                            )}
+                        </div>
+                    )}
+                />
+            </Table>
             {showAdd && (
                 <div className="flex justify-end mt-2">
                     <Button

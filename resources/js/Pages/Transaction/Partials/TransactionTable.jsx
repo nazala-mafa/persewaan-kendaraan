@@ -109,6 +109,7 @@ export default function TransactionTable({ urlParams, setUrlParams }) {
     };
     return (
         <Table
+            className="overflow-x-auto"
             rowKey={(record) => record.td_id}
             dataSource={data}
             pagination={tableParams.pagination}

@@ -41,6 +41,23 @@ const sideMenuItems = [
         ],
     },
 ];
+const headMenuItems = (user) => [
+    {
+        key: `profile`,
+        icon: <FaUser />,
+        label: <span className="capitalize">{user.name}</span>,
+        children: [
+            {
+                key: `profile.setting`,
+                label: <Link href={route("profile.edit")}>Setting</Link>,
+            },
+            {
+                key: `logout`,
+                label: <Link href={route("logout")}>Logout</Link>,
+            },
+        ],
+    },
+];
 
 export default function AuthenticatedLayout({
     children,
@@ -58,33 +75,18 @@ export default function AuthenticatedLayout({
         <Layout className="flex flex-col justify-between min-h-screen">
             <Head title={title} />
             <Menu
-                className="p-2 w-full justify-end"
+                className="p-2 w-full justify-end hidden lg:flex"
                 theme="dark"
                 mode="horizontal"
                 selectedKeys={["profile"]}
-                items={[
-                    {
-                        key: `profile`,
-                        icon: <FaUser />,
-                        label: <span className="capitalize">{user.name}</span>,
-                        children: [
-                            {
-                                key: `profile.setting`,
-                                label: (
-                                    <Link href={route("profile.edit")}>
-                                        Setting
-                                    </Link>
-                                ),
-                            },
-                            {
-                                key: `logout`,
-                                label: (
-                                    <Link href={route("logout")}>Logout</Link>
-                                ),
-                            },
-                        ],
-                    },
-                ]}
+                items={[...headMenuItems(user)]}
+            />
+            <Menu
+                className="p-2 w-full justify-end lg:hidden"
+                theme="dark"
+                mode="horizontal"
+                selectedKeys={["profile"]}
+                items={[...sideMenuItems, ...headMenuItems(user)]}
             />
             <Content className="px-10">
                 <Breadcrumb
@@ -103,7 +105,7 @@ export default function AuthenticatedLayout({
                         style={{
                             background: colorBgContainer,
                         }}
-                        width={200}
+                        className="w-0 lg:w-[200px] hidden lg:block"
                     >
                         <Menu
                             mode="inline"

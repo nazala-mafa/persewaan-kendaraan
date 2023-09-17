@@ -47,12 +47,17 @@ export default function Index({ auth, categories }) {
         >
             {contextHolder}
 
-            <div className="flex justify-between">
-                <Link href={route("transaction.create")}>
-                    <Button>Add New Transaction</Button>
+            <div className="flex flex-col md:flex-row justify-between">
+                <Link
+                    href={route("transaction.create")}
+                    className="mb-3 md:mb-0 md:me-3"
+                >
+                    <Button className="w-full bg-sky-400" type="primary">
+                        Add New Transaction
+                    </Button>
                 </Link>
 
-                <div className="flex item items-center gap-2">
+                <div className="flex item items-center gap-2 flex-col md:flex-row">
                     <DatePicker
                         format={clientDateFormat}
                         onChange={(d) => changeFilterHandler("date_from", d)}
@@ -73,6 +78,7 @@ export default function Index({ auth, categories }) {
                         allowClear
                     />
                     <Select
+                        className="w-full capitalize"
                         placeholder="All Transactions"
                         onChange={(v) => changeFilterHandler("category_id", v)}
                         options={categories.map((c) => ({

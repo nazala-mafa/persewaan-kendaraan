@@ -50,7 +50,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                 <div className="flex flex-col md:flex-row">
                     <div className="flex-1 flex mb-4">
                         <label htmlFor="description">Description</label>
-                        <div className="ms-8 md:me-8 w-full">
+                        <div className="ms-12 md:ms-8 md:me-8 w-full">
                             <Input.TextArea
                                 id="description"
                                 rows={4}
@@ -69,7 +69,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                     <div className="flex-1">
                         <div className="flex gap-4 mb-2">
                             <label
-                                className="min-w-[100px] md:min-w-[200px]"
+                                className="min-w-[100px] lg:min-w-[200px]"
                                 htmlFor="code"
                             >
                                 Code
@@ -92,7 +92,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                         </div>
                         <div className="flex gap-4 mb-2">
                             <label
-                                className="min-w-[100px] md:min-w-[200px]"
+                                className="min-w-[100px] lg:min-w-[200px]"
                                 htmlFor="rate_euro"
                             >
                                 Rate Euro
@@ -122,7 +122,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                         </div>
                         <div className="flex gap-4 mb-2">
                             <label
-                                className="min-w-[100px] md:min-w-[200px]"
+                                className="min-w-[100px] lg:min-w-[200px]"
                                 htmlFor="date_paid"
                             >
                                 Date Paid
