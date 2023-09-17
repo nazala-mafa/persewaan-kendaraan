@@ -1,4 +1,9 @@
-import { FaDatabase, FaTachographDigital, FaUser } from "react-icons/fa6";
+import {
+    FaDatabase,
+    FaGraduationCap,
+    FaTachographDigital,
+    FaUser,
+} from "react-icons/fa6";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Head, Link } from "@inertiajs/react";
 const { Content, Footer, Sider } = Layout;
@@ -39,6 +44,11 @@ const sideMenuItems = [
                 label: `Add New Transaction`,
             },
         ],
+    },
+    {
+        key: `fibonacci`,
+        icon: <FaGraduationCap />,
+        label: <Link href={route("fibonacci.index")}>Fibonacci</Link>,
     },
 ];
 const headMenuItems = (user) => [

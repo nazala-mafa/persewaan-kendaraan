@@ -1,5 +1,6 @@
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { Button, Input, Select } from "antd";
 import { useState } from "react";
 
 function fibbonacci(n) {
@@ -54,49 +55,43 @@ export default function Index({ auth }) {
 
     return (
         <Authenticated
+            menu={"fibonacci"}
+            breadcrumb={["Fibonacci", "Calculator"]}
+            title="Fibonacci"
             user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Penjumlahan Fibonacci
-                </h2>
-            }
         >
-            <Head title="List Data Transaksi" />
-
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-x-auto border-2 p-4">
                         <div className="flex flex-col md:flex-row gap-2 items-center">
-                            <input
+                            <Input
                                 type="number"
                                 value={data.n1}
                                 onChange={(e) => sumFibo("n1", e.target.value)}
                             />
                             <div className="text-3xl">+</div>
-                            <input
+                            <Input
                                 type="number"
                                 value={data.n2}
                                 onChange={(e) => sumFibo("n2", e.target.value)}
                             />
                             <div className="text-3xl">=</div>
-                            <input type="text" value={data.v} disabled />
-                            <button
-                                onClick={hitung}
-                                className="border-[1px] p-2 px-4 border-gray-500"
-                            >
+                            <Input type="text" value={data.v} disabled />
+                            <Button onClick={hitung} className="w-full">
                                 Hitung
-                            </button>
-                            <select
+                            </Button>
+                            <Select
+                                className="w-full"
                                 value={mode}
-                                onChange={(e) => setMode(e.target.value)}
+                                onChange={(v) => setMode(v)}
                             >
-                                <option value="client">
+                                <Select.Option value="client">
                                     Hitung di sisi client
-                                </option>
-                                <option value="server">
+                                </Select.Option>
+                                <Select.Option value="server">
                                     Hitung di sisi server
-                                </option>
-                            </select>
+                                </Select.Option>
+                            </Select>
                         </div>
                     </div>
                 </div>
