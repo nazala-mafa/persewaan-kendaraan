@@ -71,10 +71,10 @@ export default function TransactionDetail({
                             className="capitalize"
                             id={`category-${transaction_group_id}`}
                             value={transaction_category_id}
-                            onChange={(e) =>
+                            onChange={(v) =>
                                 setTransactionCategoryId(
                                     transaction_group_id,
-                                    e.target.value
+                                    v
                                 )
                             }
                             options={categories.map((c) => ({

@@ -27,7 +27,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('transaction', TransactionController::class)->names('transaction');
+    Route::resource('transaction', TransactionController::class)->names('transaction')->except('show');
 
     Route::get('fibonacci', [NumbersController::class, 'index'])->name('fibonacci.index');
     Route::get('fibonacci/{n1}/{n2}', [NumbersController::class, 'fibonacciProduct'])->name('fibonacci.sum');

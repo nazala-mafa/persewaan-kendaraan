@@ -2,73 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionStoreRequest;
+use App\Http\Requests\TransactionUpdateRequest;
 use App\Models\TransactionCategory;
 use App\Models\TransactionDetail;
 use App\Models\TransactionHeader;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    function datatable()
+    function datatable(TransactionService $transactionService)
     {
-        $transactionModel = new TransactionDetail();
-        $transactionModel = $transactionModel
-            ->join('transaction_header', 'transaction_header.id', '=', 'transaction_detail.transaction_id', 'left')
-            ->join('ms_category', 'ms_category.id', '=', 'transaction_detail.transaction_category_id', 'left');
-
-        $category_id = request()?->category_id;
-        if ($category_id) {
-            $transactionModel = $transactionModel->where('ms_category.id', $category_id);
-        }
-
-        $search = request()?->search;
-        if ($search) {
-            $transactionModel = $transactionModel
-                ->where('transaction_header.description', 'like', '%' . $search . '%')
-                ->orWhere('transaction_detail.name', 'like', '%' . $search . '%');
-        }
-
-        $date_from = request()->date_from;
-        if ($date_from) {
-            $transactionModel = $transactionModel->where('transaction_header.date_paid', '>=', $date_from);
-        }
-
-        $date_to = request()->date_to;
-        if ($date_to) {
-            $transactionModel = $transactionModel->where('transaction_header.date_paid', '<=', $date_to);
-        }
-
-        $order_dir = (request()->order_dir == 'descend') ? 'desc' : 'asc';
-        switch (request()->order_by) {
-            case 'description':
-                $transactionModel = $transactionModel->orderBy('transaction_header.description', $order_dir);
-                break;
-            case 'code':
-                $transactionModel = $transactionModel->orderBy('transaction_header.code', $order_dir);
-                break;
-            case 'rate_euro':
-                $transactionModel = $transactionModel->orderBy('transaction_header.rate_euro', $order_dir);
-                break;
-            case 'date_paid':
-                $transactionModel = $transactionModel->orderBy('transaction_header.date_paid', $order_dir);
-                break;
-            case 'value_idr':
-                $transactionModel = $transactionModel->orderBy('transaction_detail.value_idr', $order_dir);
-                break;
-            default:
-                $transactionModel = $transactionModel->orderBy('transaction_detail.id', 'desc');
-                break;
-        }
-
-        $total = $transactionModel
-            ->get(['transaction_detail.*', 'transaction_header.*', 'transaction_detail.id as td_id', 'ms_category.name as category_name'])
-            ->count();
-        $data = $transactionModel
-            ->skip(((request()->page ?? 1) - 1) * (request()->per_page ?? 10))
-            ->take(request()->per_page ?? 10)
-            ->get(['transaction_detail.*', 'transaction_header.*', 'transaction_detail.id as td_id', 'ms_category.name as category_name']);
-
-        return response()->json(compact('data', 'total'));
+        return response()->json($transactionService->datatable());
     }
     /**
      * Display a listing of the resource.
@@ -91,24 +37,8 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TransactionStoreRequest $request)
     {
-        $request->validate([
-            'description' => 'required',
-            'code' => 'required|unique:transaction_header,code',
-            'rate_euro' => 'required|numeric',
-            'date_paid' => 'required|date',
-            'transaction_details' => 'required|array',
-            'transaction_details.*.transaction_category_id' => 'required|numeric',
-            'transaction_details.*.details' => 'required|array',
-            'transaction_details.*.details.*.name' => 'required',
-            'transaction_details.*.details.*.value_idr' => 'required|numeric',
-        ], [
-            'transaction_details.*.details.*.name.required' => 'The name field is required.',
-            'transaction_details.*.details.*.value_idr.required' => 'The nominal field is required.',
-            'transaction_details.*.details.*.value_idr.numeric' => 'The nominal field must be a number..',
-        ]);
-
         \DB::beginTransaction();
         try {
             $transactionHeader = TransactionHeader::create([
@@ -173,21 +103,9 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TransactionUpdateRequest $request, string $id)
     {
         $transactionHeader = TransactionHeader::findOrFail($id);
-
-        $request->validate([
-            'description' => 'required',
-            'code' => 'required',
-            'rate_euro' => 'required|numeric',
-            'date_paid' => 'required|date',
-            'transaction_details' => 'required|array',
-            'transaction_details.*.transaction_category_id' => 'required|numeric',
-            'transaction_details.*.details' => 'required|array',
-            'transaction_details.*.details.*.name' => 'required',
-            'transaction_details.*.details.*.value_idr' => 'required|numeric',
-        ]);
 
         \DB::beginTransaction();
         try {

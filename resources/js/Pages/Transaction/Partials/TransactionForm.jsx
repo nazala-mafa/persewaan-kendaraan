@@ -68,10 +68,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                     </div>
                     <div className="flex-1">
                         <div className="flex gap-4 mb-2">
-                            <label
-                                className="min-w-[100px] lg:min-w-[200px]"
-                                htmlFor="code"
-                            >
+                            <label className="min-w-[100px]" htmlFor="code">
                                 Code
                             </label>
                             <div className="w-full">
@@ -92,7 +89,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                         </div>
                         <div className="flex gap-4 mb-2">
                             <label
-                                className="min-w-[100px] lg:min-w-[200px]"
+                                className="min-w-[100px]"
                                 htmlFor="rate_euro"
                             >
                                 Rate Euro
@@ -122,7 +119,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                         </div>
                         <div className="flex gap-4 mb-2">
                             <label
-                                className="min-w-[100px] lg:min-w-[200px]"
+                                className="min-w-[100px]"
                                 htmlFor="date_paid"
                             >
                                 Date Paid
