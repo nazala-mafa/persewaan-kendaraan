@@ -91,7 +91,6 @@ export default function TransactionTable({ urlParams, setUrlParams }) {
     }, [JSON.stringify(urlParams)]);
 
     const handleTableChange = (pagination, filters, sorter) => {
-        console.log(sorter);
         setUrlParams({
             ...urlParams,
             page: pagination.current,

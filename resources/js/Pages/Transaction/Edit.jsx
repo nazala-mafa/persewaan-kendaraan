@@ -11,15 +11,7 @@ export default function Create({ auth, categories, transaction }) {
     });
 
     const handleSave = () => {
-        put(route("transaction.update", transaction.id), {
-            data,
-            onSuccess(res) {
-                console.log("success", res);
-            },
-            onError(err) {
-                console.log("error", err);
-            },
-        });
+        put(route("transaction.update", transaction.id));
     };
 
     return (
@@ -45,7 +37,7 @@ export default function Create({ auth, categories, transaction }) {
                         size="large"
                         type="primary"
                     >
-                        Ubah
+                        Update
                     </Button>
                     <Link href={route("transaction.index")}>
                         <Button
@@ -54,7 +46,7 @@ export default function Create({ auth, categories, transaction }) {
                             type="primary"
                             danger
                         >
-                            Batal
+                            Cancel
                         </Button>
                     </Link>
                 </section>

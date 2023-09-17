@@ -1,21 +1,21 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import TransactionDetail from "./Partials/TransactionDetail";
 import TransactionForm from "./Partials/TransactionForm";
-import { useState } from "react";
+import { Button } from "antd";
 
-export default function Create({ auth, categories }) {
-    const { data, setData, post } = useForm({
+export default function Create({ auth, categories, success }) {
+    const { data, setData, post, errors } = useForm({
         description: "",
         code: "",
         rate_euro: "",
-        date_paid: "",
+        date_paid: null,
         transaction_details: [
             {
                 transaction_group_id: 1,
                 transaction_category_id: 1,
                 details: [
                     {
+                        id: Math.random(),
                         name: "",
                         value_idr: "",
                     },
@@ -23,19 +23,8 @@ export default function Create({ auth, categories }) {
             },
         ],
     });
-    const [errors, setErrors] = useState({});
-
     const handleSave = () => {
-        post(route("transaction.store"), {
-            data,
-            onSuccess(_) {
-                console.log("success");
-            },
-            onError(err) {
-                console.log(err);
-                setErrors(err);
-            },
-        });
+        post(route("transaction.store"));
     };
 
     return (
@@ -47,6 +36,8 @@ export default function Create({ auth, categories }) {
             user={auth.user}
         >
             <Head title="Input Data Transaksi" />
+
+            {success && <h1>{success}</h1>}
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -61,17 +52,23 @@ export default function Create({ auth, categories }) {
                         />
 
                         <section className="flex justify-end gap-4 mt-4">
-                            <button
-                                className="bg-blue-600 p-2 px-6 border-2 text-white border-black"
+                            <Button
+                                className="bg-sky-400 text-white hover:bg-white"
                                 onClick={handleSave}
+                                size="large"
+                                type="primary"
                             >
-                                Tambah
-                            </button>
-                            <Link
-                                href={route("transaction.index")}
-                                className="bg-red-600 p-2 px-6 border-2 text-white border-black"
-                            >
-                                Batal
+                                Add
+                            </Button>
+                            <Link href={route("transaction.index")}>
+                                <Button
+                                    className="bg-red-400 text-white hover:bg-white"
+                                    size="large"
+                                    type="primary"
+                                    danger
+                                >
+                                    Cancel
+                                </Button>
                             </Link>
                         </section>
                     </div>

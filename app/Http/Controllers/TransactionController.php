@@ -38,25 +38,26 @@ class TransactionController extends Controller
             $transactionModel = $transactionModel->where('transaction_header.date_paid', '<=', $date_to);
         }
 
-        if (request()->order_by && request()->order_dir) {
-            $order_dir = (request()->order_dir == 'ascend') ? 'asc' : 'desc';
-            switch (request()->order_by) {
-                case 'description':
-                    $transactionModel = $transactionModel->orderBy('transaction_header.description', $order_dir);
-                    break;
-                case 'code':
-                    $transactionModel = $transactionModel->orderBy('transaction_header.code', $order_dir);
-                    break;
-                case 'rate_euro':
-                    $transactionModel = $transactionModel->orderBy('transaction_header.rate_euro', $order_dir);
-                    break;
-                case 'date_paid':
-                    $transactionModel = $transactionModel->orderBy('transaction_header.date_paid', $order_dir);
-                    break;
-                case 'value_idr':
-                    $transactionModel = $transactionModel->orderBy('transaction_detail.value_idr', $order_dir);
-                    break;
-            }
+        $order_dir = (request()->order_dir == 'descend') ? 'desc' : 'asc';
+        switch (request()->order_by) {
+            case 'description':
+                $transactionModel = $transactionModel->orderBy('transaction_header.description', $order_dir);
+                break;
+            case 'code':
+                $transactionModel = $transactionModel->orderBy('transaction_header.code', $order_dir);
+                break;
+            case 'rate_euro':
+                $transactionModel = $transactionModel->orderBy('transaction_header.rate_euro', $order_dir);
+                break;
+            case 'date_paid':
+                $transactionModel = $transactionModel->orderBy('transaction_header.date_paid', $order_dir);
+                break;
+            case 'value_idr':
+                $transactionModel = $transactionModel->orderBy('transaction_detail.value_idr', $order_dir);
+                break;
+            default:
+                $transactionModel = $transactionModel->orderBy('transaction_detail.id', 'desc');
+                break;
         }
 
         $total = $transactionModel
@@ -94,7 +95,7 @@ class TransactionController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'code' => 'required',
+            'code' => 'required|unique:transaction_header,code',
             'rate_euro' => 'required|numeric',
             'date_paid' => 'required|date',
             'transaction_details' => 'required|array',
@@ -114,7 +115,7 @@ class TransactionController extends Controller
                 'description' => $request->description,
                 'code' => $request->code,
                 'rate_euro' => $request->rate_euro,
-                'date_paid' => $request->date_paid,
+                'date_paid' => \Carbon\Carbon::parse($request->date_paid),
             ]);
 
             foreach ($request->transaction_details as $item) {
@@ -193,7 +194,7 @@ class TransactionController extends Controller
             $transactionHeader->description = $request->description;
             $transactionHeader->code = $request->code;
             $transactionHeader->rate_euro = $request->rate_euro;
-            $transactionHeader->date_paid = $request->date_paid;
+            $transactionHeader->date_paid = \Carbon\Carbon::parse($request->date_paid);
             $transactionHeader->save();
 
             TransactionDetail::where('transaction_id', $transactionHeader->id)->delete();

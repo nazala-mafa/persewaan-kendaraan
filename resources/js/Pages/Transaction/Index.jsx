@@ -1,8 +1,8 @@
-import { Link } from "@inertiajs/react";
-import { Button, DatePicker, Input, Select } from "antd";
+import { Link, usePage } from "@inertiajs/react";
+import { Button, DatePicker, Input, Select, message } from "antd";
 import TransactionTable from "./Partials/TransactionTable";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
 
 const clientDateFormat = "DD/MM/YYYY";
@@ -18,8 +18,13 @@ const defaultParams = {
 };
 
 export default function Index({ auth, categories }) {
-    const { user } = auth;
     const [urlParams, setUrlParams] = useState(defaultParams);
+    const [messageApi, contextHolder] = message.useMessage();
+    const { success } = usePage().props.flash;
+
+    useEffect(() => {
+        success && messageApi.success(success);
+    }, [success]);
 
     const freshFilter = () => {
         setUrlParams(defaultParams);
@@ -38,8 +43,10 @@ export default function Index({ auth, categories }) {
             openmenu={"transaction"}
             breadcrumb={["Transaction", "List"]}
             title="Transaction Data Lists"
-            user={user}
+            user={auth.user}
         >
+            {contextHolder}
+
             <div className="flex justify-between">
                 <Link href={route("transaction.create")}>
                     <Button>Add New Transaction</Button>

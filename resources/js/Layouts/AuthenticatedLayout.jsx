@@ -1,6 +1,5 @@
 import { FaDatabase, FaTachographDigital, FaUser } from "react-icons/fa6";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
-import { createElement } from "react";
 import { Head, Link } from "@inertiajs/react";
 const { Content, Footer, Sider } = Layout;
 
@@ -75,6 +74,12 @@ export default function AuthenticatedLayout({
                                     <Link href={route("profile.edit")}>
                                         Setting
                                     </Link>
+                                ),
+                            },
+                            {
+                                key: `logout`,
+                                label: (
+                                    <Link href={route("logout")}>Logout</Link>
                                 ),
                             },
                         ],

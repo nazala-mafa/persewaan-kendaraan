@@ -1,4 +1,4 @@
-import { Card, DatePicker, Input } from "antd";
+import { Card, DatePicker, Input, InputNumber } from "antd";
 import TransactionDetail from "./TransactionDetail";
 
 export default function TransactionForm({ categories, data, setData, errors }) {
@@ -98,14 +98,20 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                                 Rate Euro
                             </label>
                             <div className="w-full">
-                                <Input
-                                    type="number"
+                                <InputNumber
                                     id="rate_euro"
                                     value={data.rate_euro}
-                                    className="w-full"
-                                    onChange={(e) =>
-                                        setData("rate_euro", e.target.value)
+                                    formatter={(value) =>
+                                        `${value}`.replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )
                                     }
+                                    parser={(value) =>
+                                        value?.replace(/\$\s?|(,*)/g, "")
+                                    }
+                                    className="w-full"
+                                    onChange={(v) => setData("rate_euro", v)}
                                 />
                                 {errors?.rate_euro && (
                                     <p className="text-red-600">
@@ -127,9 +133,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                                     id="date_paid"
                                     format={"DD-MM-YYYY"}
                                     value={data.date_paid}
-                                    onChange={(e) =>
-                                        setData("date_paid", e.target.value)
-                                    }
+                                    onChange={(v) => setData("date_paid", v)}
                                 />
                                 {errors?.date_paid && (
                                     <p className="text-red-600">
