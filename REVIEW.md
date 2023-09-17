@@ -22,22 +22,22 @@
 
 -   List :
 
-    -   [] Data dummy > 20 data dengan laravel seeder
-    -   [] Paginasi menggunakan php, ada sedikit bug ketika di filter
+    -   [x] Data dummy > 20 data dengan laravel seeder
+    -   [x] Paginasi menggunakan php, ada sedikit bug ketika di filter
     -   Terdapat tombol add, edit & delete data, selain filter
     -   Filter
         -   daterange sudah berjalan.
-        -   [] daterange bisa di improve lagi menggunakan jquery daterange
+        -   [] daterange bisa di improve lagi menggunakan jquery daterange -> di antdv bisa menggunakan daterange tapi kedua date harus terisi, saya kira ini tidak efektif
         -   kategori sudah berjalan sesuai ekspektasi
         -   text sudah berjalan sesuai ekspektasi
-    -   [] Delete btn sudah menggunakan konfirmasi (Y/N)
+    -   [x] Delete btn sudah menggunakan konfirmasi (Y/N)
 
     -   Bug/minor :
-        -   [] Paginasi link masih belum sesuai : https://i.imgur.com/hvxrdC8.png
-        -   [] Counter masih belum sesuai : https://i.imgur.com/tLg8mGK.png
-        -   [] Kolom belum bisa di sort ASC/DESC : https://i.imgur.com/iZAuvgA.png
-        -   [] daterange : format bisa diubah (d/m/Y),
-        -   [] endDate seharusnya tidak bisa pilih tanggal < startdate https://i.imgur.com/VocO65q.png
+        -   [x] Paginasi link masih belum sesuai : https://i.imgur.com/hvxrdC8.png
+        -   [x] Counter masih belum sesuai : https://i.imgur.com/tLg8mGK.png
+        -   [x] Kolom belum bisa di sort ASC/DESC : https://i.imgur.com/iZAuvgA.png
+        -   [x] daterange : format bisa diubah (d/m/Y),
+        -   [x] endDate seharusnya tidak bisa pilih tanggal < startdate https://i.imgur.com/VocO65q.png
 
 -   Add :
 
@@ -47,7 +47,7 @@
     -   Validasi saat store data dengan Error message
 
     -   Bug/minor :
-        -   [] Repeater belum ada tombol delete row : https://i.imgur.com/DQ9LirL.png
+        -   [x] Repeater belum ada tombol delete row : https://i.imgur.com/DQ9LirL.png
 
 -   Edit :
 
@@ -56,7 +56,7 @@
 
     -   Bug/minor :
 
-        -   [] Validasi : masih belum berjalan
+        -   [x] Validasi : masih belum berjalan
         -   [] Proses : masih belum berjalan dengan lancar.
         -   [] Update proccess masih belum lancar : ketika mengubah data di deskripsi, maupun di repeater https://i.imgur.com/bwZDAZ8.png
 
@@ -65,7 +65,7 @@
     -   sudah berjalan.
 
     -   Bug/minor :
-        -   [] Belum ada dialog konfirmasi sebelum menghapus (Y/N).
+        -   [x] Belum ada dialog konfirmasi sebelum menghapus (Y/N).
 
 # Soal 3 : Soal Logika
 
