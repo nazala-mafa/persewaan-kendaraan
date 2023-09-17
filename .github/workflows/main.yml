@@ -1,0 +1,31 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy to cPanel
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v3
+    
+    - run: npm install
+    - run: npm run build
+
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.2
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASS }}
+        port: ${{ secrets.FTP_PORT }}
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/github/**
+          **/node_modules/**
+          **/vendor/**
+          .env
