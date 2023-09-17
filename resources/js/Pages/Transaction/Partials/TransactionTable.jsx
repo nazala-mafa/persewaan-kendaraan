@@ -37,6 +37,10 @@ const columns = [
         render: (v) => <span className="capitalize">{v}</span>,
     },
     {
+        title: "Transaction Name",
+        dataIndex: "name",
+    },
+    {
         title: "Value (IDR)",
         dataIndex: "value_idr",
         render: (v) => v.toLocaleString(),
