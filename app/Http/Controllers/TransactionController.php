@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\TransactionDataTable;
 use App\Models\TransactionCategory;
 use App\Models\TransactionDetail;
 use App\Models\TransactionHeader;
@@ -10,14 +9,12 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    function datatable(TransactionDataTable $transactionDataTable)
+    function datatable()
     {
-        return $transactionDataTable->ajax();
-
         $transactionModel = new TransactionDetail();
         $transactionModel = $transactionModel
-            ->join('transaction_header', 'transaction_header.id', '=', 'transaction_detail.transaction_id')
-            ->join('ms_category', 'ms_category.id', '=', 'transaction_detail.transaction_category_id');
+            ->join('transaction_header', 'transaction_header.id', '=', 'transaction_detail.transaction_id', 'left')
+            ->join('ms_category', 'ms_category.id', '=', 'transaction_detail.transaction_category_id', 'left');
 
         $category_id = request()?->category_id;
         if ($category_id) {
@@ -41,9 +38,36 @@ class TransactionController extends Controller
             $transactionModel = $transactionModel->where('transaction_header.date_paid', '<=', $date_to);
         }
 
-        $transactions = $transactionModel->orderBy('transaction_header.id')
+        if (request()->order_by && request()->order_dir) {
+            $order_dir = (request()->order_dir == 'ascend') ? 'asc' : 'desc';
+            switch (request()->order_by) {
+                case 'description':
+                    $transactionModel = $transactionModel->orderBy('transaction_header.description', $order_dir);
+                    break;
+                case 'code':
+                    $transactionModel = $transactionModel->orderBy('transaction_header.code', $order_dir);
+                    break;
+                case 'rate_euro':
+                    $transactionModel = $transactionModel->orderBy('transaction_header.rate_euro', $order_dir);
+                    break;
+                case 'date_paid':
+                    $transactionModel = $transactionModel->orderBy('transaction_header.date_paid', $order_dir);
+                    break;
+                case 'value_idr':
+                    $transactionModel = $transactionModel->orderBy('transaction_detail.value_idr', $order_dir);
+                    break;
+            }
+        }
+
+        $total = $transactionModel
+            ->get(['transaction_detail.*', 'transaction_header.*', 'transaction_detail.id as td_id', 'ms_category.name as category_name'])
+            ->count();
+        $data = $transactionModel
+            ->skip(((request()->page ?? 1) - 1) * (request()->per_page ?? 10))
+            ->take(request()->per_page ?? 10)
             ->get(['transaction_detail.*', 'transaction_header.*', 'transaction_detail.id as td_id', 'ms_category.name as category_name']);
-        return response()->json(compact('transactions'));
+
+        return response()->json(compact('data', 'total'));
     }
     /**
      * Display a listing of the resource.
@@ -51,7 +75,7 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $categories = TransactionCategory::all();
-        return inertia('Transaction/NewIndex', compact('categories'));
+        return inertia('Transaction/Index', compact('categories'));
     }
 
     /**
@@ -133,6 +157,7 @@ class TransactionController extends Controller
             $carry[$item->transaction_category_id]['transaction_group_id'] = $item->transaction_category_id;
             $carry[$item->transaction_category_id]['transaction_category_id'] = $item->transaction_category_id;
             $carry[$item->transaction_category_id]['details'][] = [
+                'id' => $item->id,
                 'name' => $item->name,
                 'value_idr' => $item->value_idr
             ];
@@ -198,8 +223,8 @@ class TransactionController extends Controller
     public function destroy(string $id)
     {
         \DB::beginTransaction();
+        $transactionDetail = TransactionDetail::findOrFail($id);
         try {
-            $transactionDetail = TransactionDetail::findOrFail($id);
             $transactionDetail->delete();
             if ($transactionDetail->header->details()->count() == 0) {
                 $transactionDetail->header()->delete();

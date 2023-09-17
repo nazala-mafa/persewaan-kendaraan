@@ -1,9 +1,14 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TransactionForm from "./Partials/TransactionForm";
+import dayjs from "dayjs";
+import { Button, Card } from "antd";
 
 export default function Create({ auth, categories, transaction }) {
-    const { data, setData, put } = useForm(transaction);
+    const { data, setData, put } = useForm({
+        ...transaction,
+        date_paid: dayjs(transaction.date_paid),
+    });
 
     const handleSave = () => {
         put(route("transaction.update", transaction.id), {
@@ -19,43 +24,41 @@ export default function Create({ auth, categories, transaction }) {
 
     return (
         <AuthenticatedLayout
+            menu={"transaction"}
+            breadcrumb={["Transaction", "Edit"]}
+            title="Input Transaction Data"
             user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Input Data Transaksi
-                </h2>
-            }
         >
             <Head title="Input Data Transaksi" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-x-auto border-2 p-4">
-                        <h2 className="text-xl mb-6">INPUT DATA TRANSAKSI</h2>
+            <Card>
+                <TransactionForm
+                    categories={categories}
+                    data={data}
+                    setData={setData}
+                />
 
-                        <TransactionForm
-                            categories={categories}
-                            data={data}
-                            setData={setData}
-                        />
-
-                        <section className="flex justify-end gap-4 mt-4">
-                            <button
-                                className="bg-blue-600 p-2 px-6 border-2 text-white border-black"
-                                onClick={handleSave}
-                            >
-                                Ubah
-                            </button>
-                            <Link
-                                href={route("transaction.index")}
-                                className="bg-red-600 p-2 px-6 border-2 text-white border-black"
-                            >
-                                Batal
-                            </Link>
-                        </section>
-                    </div>
-                </div>
-            </div>
+                <section className="flex justify-end gap-4 mt-4">
+                    <Button
+                        className="bg-sky-400 text-white hover:bg-white"
+                        onClick={handleSave}
+                        size="large"
+                        type="primary"
+                    >
+                        Ubah
+                    </Button>
+                    <Link href={route("transaction.index")}>
+                        <Button
+                            className="bg-red-400 text-white hover:bg-white"
+                            size="large"
+                            type="primary"
+                            danger
+                        >
+                            Batal
+                        </Button>
+                    </Link>
+                </section>
+            </Card>
         </AuthenticatedLayout>
     );
 }

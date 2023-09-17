@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/transaction', [TransactionController::class, 'datatable']);
+Route::get('/transaction', [TransactionController::class, 'datatable'])->name('api.transaction');

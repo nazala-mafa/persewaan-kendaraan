@@ -40,12 +40,11 @@ export default function Create({ auth, categories }) {
 
     return (
         <AuthenticatedLayout
+            menu={"transaction.create"}
+            openmenu={"transaction"}
+            breadcrumb={["Transaction", "Create"]}
+            title="Input Data Transaksi"
             user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Input Data Transaksi
-                </h2>
-            }
         >
             <Head title="Input Data Transaksi" />
 

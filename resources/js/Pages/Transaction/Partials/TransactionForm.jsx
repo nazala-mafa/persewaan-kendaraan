@@ -1,3 +1,4 @@
+import { Card, DatePicker, Input } from "antd";
 import TransactionDetail from "./TransactionDetail";
 
 export default function TransactionForm({ categories, data, setData, errors }) {
@@ -26,6 +27,7 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                     transaction_category_id: 1,
                     details: [
                         {
+                            id: Math.random(),
                             name: "",
                             value_idr: "",
                         },
@@ -49,10 +51,9 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                     <div className="flex-1 flex mb-4">
                         <label htmlFor="description">Description</label>
                         <div className="ms-8 md:me-8 w-full">
-                            <textarea
+                            <Input.TextArea
                                 id="description"
-                                className="border-2 border-gray-400 p-2 w-full"
-                                rows="4"
+                                rows={4}
                                 value={data.description}
                                 onChange={(e) =>
                                     setData("description", e.target.value)
@@ -74,11 +75,10 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                                 Code
                             </label>
                             <div className="w-full">
-                                <input
-                                    type="text"
+                                <Input
                                     id="code"
-                                    className="w-full"
                                     value={data.code}
+                                    className="w-full"
                                     onChange={(e) =>
                                         setData("code", e.target.value)
                                     }
@@ -98,11 +98,11 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                                 Rate Euro
                             </label>
                             <div className="w-full">
-                                <input
-                                    className="w-full"
-                                    type="text"
+                                <Input
+                                    type="number"
                                     id="rate_euro"
                                     value={data.rate_euro}
+                                    className="w-full"
                                     onChange={(e) =>
                                         setData("rate_euro", e.target.value)
                                     }
@@ -122,10 +122,10 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                                 Date Paid
                             </label>
                             <div className="w-full">
-                                <input
+                                <DatePicker
                                     className="w-full"
-                                    type="date"
                                     id="date_paid"
+                                    format={"DD-MM-YYYY"}
                                     value={data.date_paid}
                                     onChange={(e) =>
                                         setData("date_paid", e.target.value)
@@ -142,20 +142,20 @@ export default function TransactionForm({ categories, data, setData, errors }) {
                 </div>
             </section>
 
-            <section className="border-2 border-gray-600 p-4 mt-6">
-                <h1 className="text-xl">DATA TRANSAKSI</h1>
+            <Card title="DATA TRANSAKSI">
                 {data.transaction_details.map((td, idx) => (
                     <TransactionDetail
-                        key={idx}
+                        key={td.transaction_group_id}
                         categories={categories}
                         data={td}
                         handlers={transactionDetailHandlers}
                         parentIdx={idx}
                         showClose={data.transaction_details.length !== 1}
+                        showAdd={data.transaction_details.length - 1 === idx}
                         errors={errors}
                     />
                 ))}
-            </section>
+            </Card>
         </>
     );
 }
