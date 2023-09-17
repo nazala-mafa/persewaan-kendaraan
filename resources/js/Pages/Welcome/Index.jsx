@@ -1,6 +1,8 @@
 import { Link, Head } from "@inertiajs/react";
 import ContentCard from "./Partials/ContentCard";
 import { useState } from "react";
+import Navbar from "./Partials/Navbar";
+import ProductCard from "./Partials/ProductCard";
 
 const defaultPageData = {
     hero: {
@@ -8,18 +10,22 @@ const defaultPageData = {
     },
     products: [
         {
+            imageUrl: "/assets/images/Image00001.jpg",
             title: "Google AdsWords",
             link: "#",
         },
         {
+            imageUrl: "/assets/images/Image00002.jpg",
             title: "Facebook Ads",
             link: "#",
         },
         {
+            imageUrl: "/assets/images/Image00004.jpg",
             title: "SEO",
             link: "#",
         },
         {
+            imageUrl: "/assets/images/Image00003.jpg",
             title: "Training",
             link: "#",
         },
@@ -50,6 +56,45 @@ const defaultPageData = {
             contentLink: "#",
         },
     ],
+    menus: [
+        {
+            label: "Homepage",
+            link: "#",
+        },
+        {
+            label: "News",
+            link: "#",
+        },
+        {
+            label: "Produk",
+            children: [
+                {
+                    label: "Google",
+                    link: "#",
+                },
+                {
+                    label: "Facebook Ads",
+                    link: "#",
+                },
+                {
+                    label: "SEO",
+                    link: "#",
+                },
+                {
+                    label: "Training",
+                    link: "#",
+                },
+            ],
+        },
+        {
+            label: "Pemesanan",
+            link: "#",
+        },
+        {
+            label: "Kontak",
+            link: "#",
+        },
+    ],
 };
 
 export default function Welcome() {
@@ -64,40 +109,7 @@ export default function Welcome() {
                     <Link href={route("dashboard")}>PartnerIklan.com</Link>
                 </h1>
 
-                <nav className="group/menu">
-                    <div className="mt-1 block md:hidden">Menu</div>
-                    <ul className="w-full text-center group-hover/menu:block md:group-hover/menu:flex hidden absolute right-0 bg-white p-4 top-16 md:top-0 border-2 md:border-0 md:relative md:flex md:gap-4">
-                        <li>
-                            <Link href="#">Homepage</Link>
-                        </li>
-                        <li>
-                            <Link href="#">News</Link>
-                        </li>
-                        <li className="group/produk">
-                            Produk
-                            <ul className="hidden group-hover/produk:block absolute border-2 border-gray-600 p-2 bg-white">
-                                <li>
-                                    <Link href="#">Google</Link>
-                                </li>
-                                <li>
-                                    <Link href="#">Facebook Ads</Link>
-                                </li>
-                                <li>
-                                    <Link href="#">SEO</Link>
-                                </li>
-                                <li>
-                                    <Link href="#">Training</Link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <Link href="#">Pemesanan</Link>
-                        </li>
-                        <li>
-                            <Link href="#">Kontak</Link>
-                        </li>
-                    </ul>
-                </nav>
+                <Navbar menus={pageData.menus} />
             </header>
 
             <div
@@ -110,15 +122,14 @@ export default function Welcome() {
 
             <section className="container mx-auto 2xl:max-w-[1024px]">
                 {/* Products Card */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 px-4 md:px-8 my-10">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 px-4 md:px-8 mt-10 mb-20">
                     {pageData.products.map((product, idx) => (
-                        <Link
-                            href={product.link}
-                            className="flex justify-center items-center h-36 border-2 cursor-pointer"
+                        <ProductCard
                             key={idx}
-                        >
-                            <p>{product.title}</p>
-                        </Link>
+                            title={product.title}
+                            link={product.link}
+                            imageUrl={product.imageUrl}
+                        />
                     ))}
                 </div>
 
