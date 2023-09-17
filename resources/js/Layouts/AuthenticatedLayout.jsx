@@ -35,14 +35,14 @@ const sideMenuItems = [
                     </Link>
                 ),
             },
-            {
-                key: `transaction.category.index`,
-                label: `Transaction Categories`,
-            },
-            {
-                key: `transaction.category.create`,
-                label: `Add New Transaction`,
-            },
+            // {
+            //     key: `transaction.category.index`,
+            //     label: `Transaction Categories`,
+            // },
+            // {
+            //     key: `transaction.category.create`,
+            //     label: `Add New Transaction`,
+            // },
         ],
     },
     {
